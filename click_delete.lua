@@ -1,4 +1,4 @@
-if not getgenv().delEnabled then
+if not delEnabled then
     getgenv().delEnabled = true 
 else
     getgenv().delEnabled = false

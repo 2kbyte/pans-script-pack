@@ -1,6 +1,6 @@
 getgenv().torsoSize = 15
 
-if not getgenv().torsoEnabled then
+if not torsoEnabled then
     getgenv().torsoEnabled = true
 else
     getgenv().torsoEnabled = false

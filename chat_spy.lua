@@ -1,4 +1,4 @@
-if not getgenv().spyEnabled then
+if not spyEnabled then
     getgenv().spyEnabled = true
 else
     getgenv().spyEnabled = false

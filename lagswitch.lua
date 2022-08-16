@@ -1,4 +1,4 @@
-if not getgenv().lagEnabled then
+if not lagEnabled then
     getgenv().lagEnabled = true
 else
     getgenv().lagEnabled = false

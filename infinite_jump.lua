@@ -1,6 +1,6 @@
 getgenv().jumpHeight = 50
 
-if not getgenv().jumpEnabled then
+if not jumpEnabled then
     getgenv().jumpEnabled = true
 else
     getgenv().jumpEnabled = false

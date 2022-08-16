@@ -1,6 +1,6 @@
 getgenv().headSize = 5
 
-if not getgenv().headEnabled then
+if not headEnabled then
     getgenv().headEnabled = true
 else
     getgenv().headEnabled = false

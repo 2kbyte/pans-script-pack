@@ -1,4 +1,4 @@
-if not getgenv().tpEnabled then
+if not tpEnabled then
     getgenv().tpEnabled = true 
 else
     getgenv().tpEnabled = false
