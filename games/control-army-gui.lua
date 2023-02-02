@@ -28,7 +28,9 @@ AutoSection:AddToggle({text = "Auto Sell", callback = function(State)
                             else
                                 if v.PLAYERNAME.SurfaceGui.TextLabel.Text == "Unclaimed" then
                                     ReplicatedStorage.RemoteEvent:FireServer("ClaimPlot", v.Name)
-                                    ReplicatedStorage.Assets.Misc.ArrowBeam:Remove()
+                                    pcall(function()
+                                        ReplicatedStorage.Assets.Misc.ArrowBeam:Remove()
+                                    end)
                                 end
                             end
                         end
@@ -69,12 +71,13 @@ AutoSection:AddToggle({text = "Auto Claim Dispensers", callback = function(State
         end)
     end
 end})
+
 function GetClosest()
     local Closest = nil
     local ShortestDistance = math.huge
 
     for i, v in pairs(Workspace.Objects:GetChildren()) do
-        local Distance = (Character.HumanoidRootPart.Position - v:FindFirstChildWhichIsA("Part").Position).Magnitude
+        local Distance = (Character.HumanoidRootPart.Position - v:FindFirstChild("BOTTOM").Position).Magnitude
         if Distance < library.flags["Aura Range"] and Distance < ShortestDistance and v.HP.Value ~= 0 then
             Closest = v
             ShortestDistance = Distance
@@ -87,7 +90,6 @@ end
 AutoSection:AddToggle({text = "Hit Aura", callback = function(State)
     if State and library.flags["Hit Aura"] then
         while library.flags["Hit Aura"] do
-            print(library.flags["Hit Aura"])
             wait(.4)
             repeat wait() until Character:FindFirstChildWhichIsA("Tool")
             if Character:FindFirstChildWhichIsA("Tool").Name:match("Wand") then
@@ -103,7 +105,23 @@ AutoSection:AddToggle({text = "Hit Aura", callback = function(State)
     end
 end}):AddSlider({text = "Aura Range", min = 10, max = 100, value = 25, suffix = " studs"})
 
+local PlayerSection = GeneralColumn1:AddSection("Player")
+PlayerSection:AddSlider({text = "Jump Power", min = 40, max = 100, value = 40, callback = function(State)
+    Character:WaitForChild("Humanoid").JumpPower = State
+end})
+
 local MiscSection = GeneralColumn1:AddSection("Misc")
+MiscSection:AddButton({text = "Anti-AFK", callback = function()
+    for i, v in pairs(getconnections(Player.Idled)) do
+        if v["Disabled"] then
+            v["Disable"](v)
+        elseif v["Disconnect"] then
+            v["Disconnect"](v)
+        end
+    end
+    library:SendNotification(2, "Anti-AFK has been enabled", 3)
+end})
+
 MiscSection:AddButton({text = "Claim Codes", callback = function()
     for i, v in pairs(Workspace:GetChildren()) do
         if v:FindFirstChild("Code") then
