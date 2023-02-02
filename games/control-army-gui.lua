@@ -28,9 +28,9 @@ AutoSection:AddToggle({text = "Auto Sell", callback = function(State)
                             else
                                 if v.PLAYERNAME.SurfaceGui.TextLabel.Text == "Unclaimed" then
                                     ReplicatedStorage.RemoteEvent:FireServer("ClaimPlot", v.Name)
-                                    pcall(function()
+                                    if ReplicatedStorage.Assets.Misc:FindFirstChild("ArrowBeam") then
                                         ReplicatedStorage.Assets.Misc.ArrowBeam:Remove()
-                                    end)
+                                    end
                                 end
                             end
                         end
@@ -106,6 +106,44 @@ AutoSection:AddToggle({text = "Hit Aura", callback = function(State)
 end}):AddSlider({text = "Aura Range", min = 10, max = 100, value = 25, suffix = " studs"})
 
 local PlayerSection = GeneralColumn1:AddSection("Player")
+PlayerSection:AddToggle({text = "Noclip", callback = function(State)
+    if State and library.flags["Noclip"] then
+        library:AddConnection(RunService.Stepped, "Noclip", function()
+            if library.flags["Noclip"] then
+                for i, v in pairs(Character:GetDescendants()) do
+                    if v:IsA("BasePart") and v.CanCollide then
+                        v.CanCollide = false
+                    end
+                end
+            else
+                library.connections["Noclip"]:Disconnect()
+            end
+        end)
+    end
+end})
+
+function Action(Object, Function)
+    if Object ~= nil then
+        Function(Object)
+    end
+end
+
+PlayerSection:AddToggle({text = "Infinite Jump", callback = function(State) 
+    if State and library.flags["Infinite Jump"] then
+        library:AddConnection(UserInputService.InputBegan, "Infinite Jump", function(Input)
+            if library.flags["Infinite Jump"] and Input.UserInputType == Enum.UserInputType.Keyboard and Input.KeyCode == Enum.KeyCode.Space then
+                Action(Character.Humanoid, function(plr)
+                    if plr:GetState() == Enum.HumanoidStateType.Jumping or plr:GetState() == Enum.HumanoidStateType.Freefall then
+                        Action(plr.Parent.HumanoidRootPart, function(plr)
+                            plr.Velocity = Vector3.new(0, library.flags["Jump Height"], 0)
+                        end)
+                    end
+                end)
+            end
+        end)
+    end
+end}):AddSlider({text = "Jump Height", min = 30, max = 100, value = 40})
+
 PlayerSection:AddSlider({text = "Jump Power", min = 40, max = 100, value = 40, callback = function(State)
     Character:WaitForChild("Humanoid").JumpPower = State
 end})
