@@ -36,10 +36,14 @@ AutoSection:AddToggle({text = "Auto Sell", callback = function(State)
                 end
                 if Meter then
                     if Meter.BackgroundColor3.R * 100 > library.flags["Sell At"] then
+                        local PreviousPos = Character.HumanoidRootPart.CFrame
                         repeat
                             wait()
                             Character.HumanoidRootPart.CFrame = Plot.ZONE.CFrame + Vector3.new(0, -10, 0)
                         until Meter.BackgroundColor3.R == 0
+                        for i = 1, 10 do
+                            Character.HumanoidRootPart.CFrame = PreviousPos
+                        end
                     end
                 end
             else
