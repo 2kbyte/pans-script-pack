@@ -19,7 +19,7 @@ AutoSection:AddToggle({text = "Auto Sell", callback = function(State)
     if State and library.flags["Auto Sell"] then
         library:AddConnection(RunService.RenderStepped, "Auto Sell", function()
             if library.flags["Auto Sell"] then
-                local Meter = Character.Backpack:WaitForChild("Bar").SurfaceGui.Meter
+                local Meter = Character:WaitForChild("Backpack").Bar.SurfaceGui.Meter
                 if not Plot then
                     for i, v in pairs(Workspace:GetChildren()) do
                         if v.Name:match("Plot") then
@@ -28,6 +28,7 @@ AutoSection:AddToggle({text = "Auto Sell", callback = function(State)
                             else
                                 if v.PLAYERNAME.SurfaceGui.TextLabel.Text == "Unclaimed" then
                                     ReplicatedStorage.RemoteEvent:FireServer("ClaimPlot", v.Name)
+                                    ReplicatedStorage.Assets.Misc.ArrowBeam:Remove()
                                 end
                             end
                         end
@@ -81,12 +82,11 @@ end
 
 AutoSection:AddToggle({text = "Hit Aura", callback = function(State)
     if State and library.flags["Hit Aura"] then
-        getgenv().Tool = Character:FindFirstChildWhichIsA("Tool")
-
         while library.flags["Hit Aura"] do
+            print(library.flags["Hit Aura"])
             wait(.4)
-            if Tool.Name:match("Wand") then
-
+            repeat wait() until Character:FindFirstChildWhichIsA("Tool")
+            if Character:FindFirstChildWhichIsA("Tool").Name:match("Wand") then
                 local Object = GetClosest()
                 if not Object or Object.HP.Value == 0 then
                     Object = GetClosest()
@@ -135,12 +135,13 @@ MiscSection:AddButton({text = "Remove Doors", callback = function()
     for i, v in pairs(Workspace.Doors:GetChildren()) do
         v.CanCollide = false    
     end
-    for i, v in pairs(Workspace.Maps:GetDescendants()) do
+    for i, v in pairs(Workspace.MAP:GetDescendants()) do
         if v:IsA("TouchTransmitter") then
-            v:Remove()
             v.Parent.CanCollide = false
+            v:Remove()
         end
     end
+    library:SendNotification(2, "All doors have been removed", 3)
 end})
 
 local ShopSection = GeneralColumn2:AddSection("Shops")
