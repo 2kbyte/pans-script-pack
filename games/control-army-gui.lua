@@ -101,7 +101,7 @@ AutoSection:AddToggle({text = "Hit Aura", callback = function(State)
             end
         end
     end
-end}):AddSlider({text = "Aura Range", min = 10, max = 60, value = 25, suffix = " studs"})
+end}):AddSlider({text = "Aura Range", min = 10, max = 100, value = 25, suffix = " studs"})
 
 local MiscSection = GeneralColumn1:AddSection("Misc")
 MiscSection:AddButton({text = "Claim Codes", callback = function()
