@@ -91,7 +91,9 @@ AutoSection:AddToggle({text = "Hit Aura", callback = function(State)
                 if not Object or Object.HP.Value == 0 then
                     Object = GetClosest()
                 end
-                ReplicatedStorage.RemoteEvent:FireServer("Attack", Object)
+                if Object ~= nil then
+                    ReplicatedStorage.RemoteEvent:FireServer("Attack", Object)
+                end
             end
         end
     end
