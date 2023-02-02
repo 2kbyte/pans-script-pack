@@ -1,5 +1,5 @@
+--Game: https://www.roblox.com/games/10700669209/RAID-Control-Army
 loadstring(game:HttpGet("https://raw.githubusercontent.com/2kbyte/public/main/uwuware-lib-fork.lua/proxima-lib.lua", true))()
-loadfile("proxima.lua")()
 
 local Player = game:GetService("Players").LocalPlayer
 local Character = game:GetService("Players").LocalPlayer.Character
