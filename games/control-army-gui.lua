@@ -35,7 +35,7 @@ AutoSection:AddToggle({text = "Auto Sell", callback = function(State)
                     end
                 end
                 if Meter then
-                    if Meter.BackgroundColor3.R * 100 > library.flags["Sell At"] then
+                    if Meter.BackgroundColor3.R * 100 >= library.flags["Sell At"] then
                         local PreviousPos = Character.HumanoidRootPart.CFrame
                         repeat
                             wait()
