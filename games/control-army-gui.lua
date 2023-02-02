@@ -1,4 +1,5 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/2kbyte/public/main/uwuware-lib-fork.lua/proxima-lib.lua", true))()
+loadfile("proxima.lua")()
 
 local Player = game:GetService("Players").LocalPlayer
 local Character = game:GetService("Players").LocalPlayer.Character
@@ -52,13 +53,8 @@ AutoSection:AddToggle({text = "Auto Claim Dispensers", callback = function(State
         library.options["Claim Dispensers"].callback()
         library:AddConnection(RunService.RenderStepped, "Auto Claim", function()
             if library.flags["Auto Claim Dispensers"] then
-                if not TimeLeft then
-                    for i, v in pairs(Workspace.Dispensers:GetChildren()) do
-                        getgenv().TimeLeft = Workspace:GetServerTimeNow() - (DataService:Get(v.Name .. "_D"))
-                    end
-                end
-                if TimeLeft > 300 then
-                    for i, v in pairs(Workspace.Dispensers:GetChildren()) do
+                for i, v in pairs(Workspace.Dispensers:GetChildren()) do
+                    if Workspace:GetServerTimeNow() - (DataService:Get(v.Name .. "_D")) > 300 then
                         ReplicatedStorage.RemoteEvent:FireServer("Dispenser", v.Name)
                     end
                 end
@@ -86,20 +82,18 @@ end
 AutoSection:AddToggle({text = "Hit Aura", callback = function(State)
     if State and library.flags["Hit Aura"] then
         getgenv().Tool = Character:FindFirstChildWhichIsA("Tool")
-        library:AddConnection(RunService.RenderStepped, "Hit Aura", function()
-            if library.flags["Hit Aura"] then
-                if Tool.Name:match("Wand") then
-                    wait(.1)
-                    local Object = GetClosest()
-                    if not Object or Object.HP.Value == 0 then
-                        Object = GetClosest()
-                    end
-                    ReplicatedStorage.RemoteEvent:FireServer("Attack", Object)
+
+        while library.flags["Hit Aura"] do
+            wait(.4)
+            if Tool.Name:match("Wand") then
+
+                local Object = GetClosest()
+                if not Object or Object.HP.Value == 0 then
+                    Object = GetClosest()
                 end
-            else
-                library.connections["Hit Aura"]:Disconnect()
+                ReplicatedStorage.RemoteEvent:FireServer("Attack", Object)
             end
-        end)
+        end
     end
 end}):AddSlider({text = "Aura Range", min = 10, max = 60, value = 25, suffix = " studs"})
 
