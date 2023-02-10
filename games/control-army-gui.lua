@@ -150,12 +150,8 @@ end})
 
 local MiscSection = GeneralColumn1:AddSection("Misc")
 MiscSection:AddButton({text = "Anti-AFK", callback = function()
-    for i, v in pairs(getconnections(Player.Idled)) do
-        if v["Disabled"] then
-            v["Disable"](v)
-        elseif v["Disconnect"] then
-            v["Disconnect"](v)
-        end
+    for i, v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+        v:Disable()
     end
     library:SendNotification(2, "Anti-AFK has been enabled", 3)
 end})
